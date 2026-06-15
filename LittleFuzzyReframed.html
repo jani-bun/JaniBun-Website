@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="DnDStyle.css" />
+  <title>>LittleFuzzyReframed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=News+Cycle:wght@400;700&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+<!-- DIN Alternate from CDNFonts -->
+<link href="https://fonts.cdnfonts.com/css/din-alternate" rel="stylesheet">
+
+
+</head>
+<body>
+
+
+  
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-label">
+  <h2>Project Description</h2>
+  </div>
+  <div class="sidebar-content">
+    
+
+    <p>
+      This project reimagines <b>H. Beam Piper’s 1962 science fiction novel <i>"Little Fuzzy"</i></b>, transforming its narrative into an interactive exploration of <b>perspective and storytelling</b>. In the original novel, events unfold through the viewpoints of various characters, each interpreting the world differently. For this project, the text has been adapted to fit the distinct points of view of characters such as <b>Jack Holloway</b> and <b>Leonard Kellogg</b>, highlighting how the same events can be perceived and understood in diverse ways.
+    </p>
+
+    <p>
+      The interface lets users <b>drag and drop tiles</b> representing scenes from the book into slots to construct their own version of the story. Each tile shows a scene from one of two characters’ perspectives, highlighting how tone, meaning, and emotional impact change depending on who is “telling” the story.
+    </p>
+
+    <p>
+      By rearranging tiles and switching perspectives, users can see firsthand how narrative is not fixed but <b>relative and interpretive</b>. Once satisfied, users can <b>download their story as a PDF</b> to save their creation, read it and learn one of the versions, or <b>reset the tiles</b> to experiment with new arrangements.
+    </p>
+
+    <p>
+      The project turns <i>"Little Fuzzy"</i> into an interactive exploration, showing that even a familiar story can feel new when viewed from different angles. It emphasizes that <b>perspective</b> is not just a detail of narration — it is a central force that shapes understanding and experience.
+    </p>
+  </div>
+
+  <div class="resizer" id="resizer">
+    <span class="down-arrow bounce" id="down-arrow">&#10095;</span>
+  </div>
+</div>
+
+<header>
+    <h2 id="top" class="flicker">HEART/MIND</h2>
+    <h1>A Little Fuzzy Reframed</h1>
+  </header>
+<br>
+  <div class="content">
+       <div class="section" id="expl" >
+           <svg class="notch top" width="180" height="20" viewBox="0 0 180 20"
+       xmlns="http://www.w3.org/2000/svg" overflow="visible">
+    <defs>
+      <!-- expanded filter region so glow never clips -->
+      <filter id="neonGlow" x="-50%" y="-200%" width="300%" height="600%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+        <feFlood flood-color="#ffe81f" result="color"/>
+        <feComposite in="color" in2="blur" operator="in" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+
+    <polygon points="0,0 20,20 160,20 180,0"
+             fill="transparent" stroke="#444" stroke-width="2"/>
+  </svg>
+  </svg>
+        <p class="heading"><b>How It Works!</b></p>
+        <hr class="custom-hr">
+    <li><b>Drag and drop</b> tiles into the slots to build your version of the story.</li>
+    <hr class="custom-hr">
+    <li>Each tile shows a scene from a different perspective - <b>switch and arrange</b> them as you like.</li>
+     <hr class="custom-hr">
+    <li>When you’re done, press <b>“Download”</b> to save a ready to read story as a <b>PDF</b>, or <b>“Reset”</b> to start over.</li>
+    <hr class="custom-hr">
+
+    </div>
+    <br>
+   
+    <div class="section" style="padding: 0;">
+
+          <svg class="notch top" width="180" height="20" viewBox="0 0 180 20" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,0 20,20 160,20 180,0" fill="transparent" stroke="#444" stroke-width="2"/>
+    </svg>
+ <p class="heading"><b>Drag the tiles into the empty slots:</b> </p>
+
+    
+<br>
+  <!-- First snappable grid (original layout) -->
+<div id="snappable-area">
+  <div id="snappable-grid">
+    <div class="sn-slot" id="slot1"><h1>Slot 1</h1></div>
+    <div class="sn-slot" id="slot2"><h1>Slot 2</h1></div>
+    <div class="sn-slot" id="slot3"><h1>Slot 3</h1></div>
+    <div class="sn-slot" id="slot4"><h1>Slot 4</h1></div>
+  </div>
+</div>
+<br>
+<button id="check">Download</button>
+    <button id="reset"><?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg class="refresh-icon" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 3V8M21 8H16M21 8L18 5.29168C16.4077 3.86656 14.3051 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.2832 21 19.8675 18.008 20.777 14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></button>
+<div id="result"></div>
+<br>
+</div>
+<br>
+
+
+<!-- Second snappable grid (tiles, 2x2 Rubik's cube style) -->
+<div id="snappable-area">
+  
+
+  <div class="snappable-grids">
+    <!-- Left grid 2x2 -->
+     
+     <div class="section" style="width:42%">
+      <svg class="notch top" width="180" height="20" viewBox="0 0 180 20" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,0 20,20 160,20 180,0" fill="transparent" stroke="#444" stroke-width="2"/>
+    </svg>
+    <hr class="custom-hr">
+     <p class="tiles-label" id="Jack">Perspective of a man of quiet determination, drawn into a world where small discoveries can change everything:</p>
+     <hr class="custom-hr">
+    <div class="snappable-grid" id="snappable-grid-left">
+     
+      
+      
+      <div class="sn-slot" id="slot5">
+        <p class="slot-quote">“There now—that’s your very own.”</p>
+      </div>
+      <div class="sn-slot" id="slot6">
+        <p class="slot-quote">“They don’t dare let the Fuzzies be proven sapient.”</p>
+      </div>
+      <div class="sn-slot" id="slot7">
+        <p class="slot-quote">“All she wanted was to show you her new jingle.”</p>
+      </div>
+      <div class="sn-slot" id="slot8">
+        <p class="slot-quote">“That does it, Jack.”</p>
+      </div>
+    </div>
+    </div>
+
+    <!-- Right grid 2x2 -->
+     <div class="section" style="width:42%">
+      <svg class="notch top" width="180" height="20" viewBox="0 0 180 20" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,0 20,20 160,20 180,0" fill="transparent" stroke="#444" stroke-width="2"/>
+    </svg>
+    <hr class="custom-hr">
+      <p class="tiles-label" id="Kellog">Perspective of a man who navigates the world with precision, seeing patterns and possibilities others overlook:</p>
+      <hr class="custom-hr">
+    <div class="snappable-grid" id="snappable-grid-right">
+      
+      <div class="sn-slot" id="slot9">
+        <p class="slot-quote">“Observe, record, don’t romanticize.”</p>
+      </div>
+      <div class="sn-slot" id="slot10">
+        <p class="slot-quote">“Evidence must be curated, not speculated upon.”</p>
+      </div>
+      <div class="sn-slot" id="slot11">
+        <p class="slot-quote">“Reflex took command.”</p>
+      </div>
+      <div class="sn-slot" id="slot12">
+        <p class="slot-quote">“I was the last sane man left in it.”</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- other scripts, draggable etc. -->
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sidebar = document.getElementById("sidebar");
+  const resizer = document.getElementById("resizer");
+  const arrow = document.getElementById("down-arrow");
+
+  let isResizing = false;
+  let isExpanded = false;
+  const minWidth = 0.06 * window.innerWidth;  // folded
+  const expandThreshold = 0.15 * window.innerWidth; // show content after drag
+
+  // Arrow toggle
+  arrow.addEventListener("click", () => {
+    if (!isExpanded) {
+      sidebar.style.width = "50vw";
+      sidebar.classList.add("expanded");
+      isExpanded = true;
+    } else {
+      sidebar.style.width = minWidth + "px";
+      sidebar.classList.remove("expanded");
+      isExpanded = false;
+    }
+  });
+
+  // Drag to resize
+  resizer.addEventListener("mousedown", () => {
+    isResizing = true;
+    document.body.style.cursor = "ew-resize";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isResizing) return;
+    let newWidth = Math.max(e.clientX, minWidth);
+    sidebar.style.width = newWidth + "px";
+
+    // Toggle content based on width
+    if (newWidth > expandThreshold) {
+      sidebar.classList.add("expanded");
+      isExpanded = true;
+    } else {
+      sidebar.classList.remove("expanded");
+      isExpanded = false;
+    }
+  });
+
+  document.addEventListener("mouseup", () => {
+    isResizing = false;
+    document.body.style.cursor = "default";
+  });
+});
+</script>
+
+
+
+
+  <!-- create tiles -->
+  <script>
+    function renderTile(id, label) {
+      const el = document.createElement('div');
+      el.className = 'sn-tile';
+      el.id = id;
+      el.textContent = label || id;
+      return el;
+    }
+
+    // create slots
+    document.getElementById('slot5').appendChild(renderTile('tile1', 'POV1CH1'));
+    document.getElementById('slot6').appendChild(renderTile('tile2', 'POV2CH1'));
+    document.getElementById('slot7').appendChild(renderTile('tile3', 'POV1CH2'));
+    document.getElementById('slot8').appendChild(renderTile('tile4', 'POV2CH2'));
+    document.getElementById('slot9').appendChild(renderTile('tile5', 'POV1CH3'));
+    document.getElementById('slot10').appendChild(renderTile('tile6', 'POV2CH3'));
+    document.getElementById('slot11').appendChild(renderTile('tile7', 'POV1CH4'));
+    document.getElementById('slot12').appendChild(renderTile('tile8', 'POV2CH4'));
+  </script>
+
+  <!-- draggable UMD  -->
+  <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.12/lib/draggable.bundle.legacy.js"></script>
+
+  <script>
+    (function () {
+      // select all slots
+      const slots = document.querySelectorAll('.sn-slot');
+
+      // Important: pass the NodeList of slot containers so tiles can be moved between slots, whatever it is
+      const sortable = new window.Draggable.Sortable(slots, {
+        draggable: '.sn-tile',
+        mirror: {
+          constrainDimensions: true
+        }
+      });
+
+      // add  snappable  and dropzones 
+      sortable.addPlugin(new window.Draggable.Plugins.Snappable({
+        dropzone: '.sn-slot',
+        tolerance: 30
+      }));
+
+      // small UX niceties: add/remove dragging class on source element also whatever that is 
+      sortable.on('drag:start', (evt) => {
+        // event properties differ by version; try common fields????
+        const src = evt.originalSource || evt.source;
+        if (src && src.classList) src.classList.add('dragging');
+      });
+
+      sortable.on('drag:stop', (evt) => {
+        const src = evt.originalSource || evt.source;
+        if (src && src.classList) src.classList.remove('dragging');
+      });
+
+      // snap to the slot
+      sortable.on('sortable:stop', (evt) => {
+      });
+    })();
+  </script>
+ <script>
+ // Define which tile arrangements trigger which PDFs
+ const sceneSet = [
+   { 
+     tiles: ["tile1","tile2","tile3","tile4"], 
+     message: "Full story Perspective 1",
+     pdf: "All Jack.pdf"
+   },
+   { 
+     tiles: ["tile5","tile6","tile7","tile8"], 
+     message: "Full story Perspective 2",
+     pdf: "All Kellog.pdf"
+   },
+   { 
+     tiles: ["tile1","tile2","tile5","tile6"], 
+     message: "Beginning of the story (both perspectives)",
+     pdf: "All Jack.pdf"
+   },
+   { 
+     tiles: ["tile7","tile8","tile3","tile4"], 
+     message: "Ending of the story (both perspectives)",
+     pdf: "All Kellog.pdf"
+   }
+ ];
+
+ // Golden SVG icons
+ const icons = {
+   check: `
+     <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style="vertical-align:middle; margin-right:6px;">
+       <path d="M4 13l5 5L20 6"
+             stroke="gold"
+             stroke-width="3"
+             stroke-linecap="round"
+             stroke-linejoin="round" />
+     </svg>
+   `,
+   cross: `
+     <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style="vertical-align:middle; margin-right:6px;">
+       <path d="M6 6l12 12M18 6l-12 12"
+             stroke="gold"
+             stroke-width="3"
+             stroke-linecap="round"
+             stroke-linejoin="round" />
+     </svg>
+   `
+ };
+
+ document.getElementById("check").addEventListener("click", () => {
+   const SceneSlots = [
+     document.getElementById("slot1"),
+     document.getElementById("slot2"),
+     document.getElementById("slot3"),
+     document.getElementById("slot4"),
+   ];
+
+   const placed = SceneSlots.map(slot => {
+     const tile = slot.querySelector(".sn-tile");
+     return tile ? tile.id : null;
+   });
+
+   const match = sceneSet.find(
+     ans => JSON.stringify(ans.tiles) === JSON.stringify(placed)
+   );
+
+   const resultEl = document.getElementById("result");
+
+   if (match) {
+     resultEl.innerHTML = `${icons.check}<span style="color:gold; font-weight:bold;">${match.message}</span>`;
+     window.open(`pdf/${match.pdf}`, '_blank');
+   } else {
+     resultEl.innerHTML = `${icons.cross}<span style="color:gold; font-weight:bold;">No matching story arrangement found.</span>`;
+   }
+ });
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sidebar = document.getElementById("sidebar");
+  const resizer = document.getElementById("resizer");
+  const arrow = document.getElementById("down-arrow");
+
+  let isResizing = false;
+  let isExpanded = false; // tracks toggle state
+
+  // Drag to resize
+  resizer.addEventListener("mousedown", () => {
+    isResizing = true;
+    document.body.style.cursor = "ew-resize";
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isResizing) return;
+    const maxWidth = window.innerWidth;
+    const minWidth = 0.06 * maxWidth; // 6vw minimum
+    let newWidth = Math.min(Math.max(e.clientX, minWidth), maxWidth);
+    sidebar.style.width = newWidth + "px";
+    isExpanded = false; // manual resize overrides toggle
+  });
+
+  document.addEventListener("mouseup", () => {
+    isResizing = false;
+    document.body.style.cursor = "default";
+  });
+
+  // Arrow toggle
+  arrow.addEventListener("click", () => {
+    const maxWidth = window.innerWidth;
+    const expandedWidth = 0.5 * maxWidth; // 50vw
+    const minWidth = 0.06* maxWidth;     // 6vw
+
+    if (!isExpanded) {
+      // Expand from current width to 50vw
+      sidebar.style.width = expandedWidth + "px";
+      sidebar.classList.add("expanded");
+      isExpanded = true;
+    } else {
+      // Retract to min width
+      sidebar.style.width = minWidth + "px";
+      sidebar.classList.remove("expanded");
+      isExpanded = false;
+    }
+  });
+});
+</script>
+
+<script>
+document.getElementById("reset").addEventListener("click", () => {
+  const resetMap = {
+    tile1: "slot5",
+    tile2: "slot6",
+    tile3: "slot7",
+    tile4: "slot8",
+    tile5: "slot9",
+    tile6: "slot10",
+    tile7: "slot11",
+    tile8: "slot12",
+  };
+
+  Object.entries(resetMap).forEach(([tileId, slotId]) => {
+    const tile = document.getElementById(tileId);
+    const slot = document.getElementById(slotId);
+    if (tile && slot) slot.appendChild(tile);
+  });
+
+  document.getElementById("result").textContent = ""; // clear any message
+});
+</script>
+
+<script>
+// Define quotes for each tile
+const tileQuotes = {
+  tile1: "“There now—that’s your very own.”",
+  tile2: "“They don’t dare let the Fuzzies be proven sapient.”",
+  tile3: "“All she wanted was to show you her new jingle.”",
+  tile4: "“That does it, Jack.”",
+  tile5: "“Observe, record, don’t romanticize.”",
+  tile6: "“Evidence must be curated, not speculated upon.”",
+  tile7: "“Reflex took command.”",
+  tile8: "“I was the last sane man left in it.”"
+};
+
+
+
+// Add quote overlay to each tile dynamically
+Object.keys(tileQuotes).forEach(tileId => {
+  const tile = document.getElementById(tileId);
+  if (!tile) return;
+
+  // Create a quote element
+  const quoteEl = document.createElement('div');
+  quoteEl.className = 'tile-quote-overlay';
+  quoteEl.textContent = tileQuotes[tileId];
+
+  // Append to tile
+  tile.style.position = 'relative';
+  tile.appendChild(quoteEl);
+
+  // Hide quote by default
+  quoteEl.style.position = 'absolute';
+  quoteEl.style.top = '0';
+  quoteEl.style.left = '0';
+  quoteEl.style.right = '0';
+  quoteEl.style.bottom = '0';
+quoteEl.style.fontStyle = 'italic';
+quoteEl.style.fontFamily = 'Josefin Sans';
+  quoteEl.style.display = 'flex';
+  quoteEl.style.justifyContent = 'center';
+  quoteEl.style.alignItems = 'center';
+  quoteEl.style.textAlign = 'center';
+  quoteEl.style.background = 'rgba(0,0,0,0.9)';
+  quoteEl.style.color = 'rgb(122, 122, 122)';
+  quoteEl.style.fontSize = '80%';
+  quoteEl.style.opacity = '0';
+  quoteEl.style.transition = 'opacity 0.3s';
+  quoteEl.style.pointerEvents = 'none';
+
+  // Show quote on hover or click
+  tile.addEventListener('mouseenter', () => {
+    quoteEl.style.opacity = '1';
+  });
+  tile.addEventListener('mouseleave', () => {
+    quoteEl.style.opacity = '0';
+  });
+  tile.addEventListener('click', () => {
+    quoteEl.style.opacity = quoteEl.style.opacity === '1' ? '0' : '1';
+  });
+});
+</script>
+
+
+</body>
+</html>
