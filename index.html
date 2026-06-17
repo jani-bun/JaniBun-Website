@@ -1,602 +1,269 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <link rel="icon" type="image/x-icon" href="Pic/Squiggle.svg">
-  <title>
-    Jani Portfolio
-  </title>
-   <meta charset="utf-8" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jani Buńka — Graphic Designer</title>
+  <meta name="description" content="Portfolio of Jani Buńka, graphic designer based in Rotterdam. WdKA student.">
+  <link rel="icon" href="Pic/about/Squiggle.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
 </head>
-
-
 <body>
 
-
-  <div class="topnav" id="navbar">
+<!-- ── NAV (hidden until hero scrolls out) ──────────────────────── -->
+<nav class="topnav" id="navbar" role="navigation" aria-label="Main navigation">
   <ul>
-  <li class="nav"><a class="active" id="text1" class="target-text" class="h"href="index.html" href="#slide1">HOME</a></li>
-  <li class="nav"><a id="text2" class="target-text"class="active" class="p" href="index.html" href="#slide2">WORK</a></li>
-  <li class="nav"><a id="text3" class="target-text"class="a"href="About.html">ABOUT</a></li>
-</ul>
- 
-</div>
-
-
-<div id="home" class="header">
- <svg
-  
-    
-     preserveAspectRatio="xMidYMin meet"
-      viewBox="0 0 1000 1500"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      class="squiggle"
-    >
-      <path
-        path d="M327.86 77.8525C458.698 102.431 641.761 113.209 625.766 55.1708C609.771 -2.86744 129.95 449.431 61.9441 325.349C-6.06223 201.267 826.369 186.591 941 171.914M562.264 171.914C562.264 171.914 509.803 221.28 503.138 171.914C498.14 134.893 517.169 133.677 537.127 129.22C571.883 121.458 562.264 198.599 562.264 198.599M609.771 122.549L613.103 192.905C613.103 192.905 614.529 122.77 640.428 125.884C664.182 128.741 663.088 186.591 663.088 186.591M701.742 122.549V186.591M701.742 88.5262C696.326 89.2577 696.326 101.804 701.742 102.535C705.941 103.102 709.94 99.4335 709.74 95.1972C709.548 91.1323 705.771 87.982 701.742 88.5262Z" 
-        stroke="white"
-        stroke-width="100"
-        stroke-linejoin="round"
-        stroke-linecap="round"
-      />
-    </svg>
-   <a href="#slide2" class="down-arrow-link">
-  <span class="down-arrow bounce">&#10095;</span>
-</a>
-
-</div></a>
- <div id="slide2" class="front">
-
-<div style="width: 80%;margin: 5vh auto">
-
-  <div class="line3"></div>
-</div>
-</div>
-
-
-<div class="front">
-<div style="width: 100%">
-  <div class="btn-group">
-  <button class="btn active" onclick="filterSelection('all')">Show all</button>
-  <button class="btn" onclick="filterSelection('Posters')">Poster</button>
-  <button class="btn" onclick="filterSelection('Publication')">Publication</button>
-   <button class="btn" onclick="filterSelection('Other')">Other</button> 
-</div>
-</div>
-
-
-
-
-<div class="row"> 
-  <div class="column" class="container">
-
-
-   <a href="Radio Girl.html" class="tile-link">
-  <div class="tile">
-    <div class="filterDiv Other">
-      <img class="grayscale" src="Pic/IMG_40.JPEG">
-
-      <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-
-      <div class="descr">
-        <h1 id="RG">Radio Girl</h1>
-        <p>2025</p>
+    <li class="nav-logo"><a href="index.html">Jani Buńka</a></li>
+    <li style="display:flex;align-items:center;gap:1rem;">
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="#work">Work</a>
+        <a href="About.html">About</a>
       </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<!-- ── HERO WRAPPER (sticky pin zone) ───────────────────────────── -->
+<div id="heroWrapper">
+  <section class="hero" id="home" aria-label="Introduction">
+
+    <!-- top-left: name + role -->
+    <div class="hero-label">
+      <span>Graphic Designer</span>
+      <strong>Jani Buńka</strong>
+    </div>
+
+    <!-- top-right: year -->
+    <span class="hero-year">2026</span>
+
+    <!-- ── Signature SVG ────────────────────────────────────────── -->
+    <svg class="squiggle"
+         viewBox="0 0 1000 400"
+         fill="none"
+         preserveAspectRatio="xMidYMid meet"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-label="Jani Buńka signature"
+         role="img">
+      <path
+        d="M327.86 77.8525C458.698 102.431 641.761 113.209 625.766 55.1708
+           C609.771 -2.86744 129.95 449.431 61.9441 325.349
+           C-6.06223 201.267 826.369 186.591 941 171.914
+           M562.264 171.914C562.264 171.914 509.803 221.28 503.138 171.914
+           C498.14 134.893 517.169 133.677 537.127 129.22
+           C571.883 121.458 562.264 198.599 562.264 198.599
+           M609.771 122.549L613.103 192.905
+           C613.103 192.905 614.529 122.77 640.428 125.884
+           C664.182 128.741 663.088 186.591 663.088 186.591
+           M701.742 122.549V186.591
+           M701.742 88.5262C696.326 89.2577 696.326 101.804 701.742 102.535
+           C705.941 103.102 709.94 99.4335 709.74 95.1972
+           C709.548 91.1323 705.771 87.982 701.742 88.5262Z"
+        stroke-linejoin="round"
+        stroke-linecap="round"/>
+    </svg>
+
+    <!-- ── Reveal button — visible on load, fades out as user scrolls ── -->
+    <button id="revealBtn" aria-label="Auto-scroll to reveal signature">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      Scroll
+    </button>
+
+    <!-- ── "Keep scrolling" cue — appears once signature is fully drawn ── -->
+    <div class="hero-scroll" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      <span>Keep scrolling</span>
+    </div>
+
+  </section>
+</div><!-- /heroWrapper -->
+
+<!-- ── WORK ─────────────────────────────────────────────────────── -->
+<section id="work" aria-label="Selected work">
+
+  <div class="filter-bar" role="group" aria-label="Filter work by category">
+    <div class="btn-group" id="btn-group">
+      <button class="btn active" onclick="filterSelection('all',event)">All</button>
+      <button class="btn" onclick="filterSelection('Posters',event)">Poster</button>
+      <button class="btn" onclick="filterSelection('Publication',event)">Publication</button>
+      <button class="btn" onclick="filterSelection('Other',event)">Other</button>
     </div>
   </div>
-</a>
 
+  <div class="work-grid" id="workGrid">
 
+    <div class="work-cell">
+      <a href="Radio Girl.html" class="tile-link">
+        <div class="filterDiv Other show">
+          <div class="tile-img-wrap">
+            <img src="Pic/radio-girl/IMG_40.JPEG" alt="Radio Girl project preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Radio Girl</h2><span>2025</span></div>
+        </div>
+      </a>
+    </div>
 
- <a href="Rooms of Memories.html" class="tile-link">
-<div class="tile">
-  <div class="filterDiv Publication">
-  <img class="grayscale" src="Pic/Add/IMG_A11.JPG">
-  <?xml version="1.0" encoding="utf-8"?>
-  <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div class="descr">
-    <h1>Rooms of Memories</h1>
-    <p>2024</p>
-  </div>
-  </div>
-</div>
-</a>
+    <div class="work-cell">
+      <a href="LittleFuzzyReframed.html" class="tile-link" target="_blank" rel="noopener">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/fuzzy/IMG_A13.JPG" alt="A Little Fuzzy Reframed preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>A Little Fuzzy Reframed</h2><span>2025</span></div>
+        </div>
+      </a>
+    </div>
 
-<a href="Zwemmen in de stad.html" class="tile-link">
-<div class="tile">
-  <div class="filterDiv Publication">
-  <img class="grayscale" src="Pic/IMG_20.jpg">
-  <?xml version="1.0" encoding="utf-8"?>
-  <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div class="descr">
-    <h1>Zwemmen in de stad</h1>
-    <p>2024</p>
-  </div>
-  </div>
-</div>
-</a>
+    <div class="work-cell">
+      <a href="NN North Sea Jazz Poster.html" class="tile-link">
+        <div class="filterDiv Posters show">
+          <div class="tile-img-wrap">
+            <img src="Pic/north-sea-jazz/IMG_A10.JPG" alt="NN North Sea Jazz Poster preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>NN North Sea Jazz Poster</h2><span>2025</span></div>
+        </div>
+      </a>
+    </div>
 
-</div>
+    <div class="work-cell">
+      <a href="https://jans-fabulous-site-3b184a.webflow.io/final-item/final" class="tile-link" target="_blank" rel="noopener">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/electroweave/IMG_38.JPEG" alt="Electroweave project preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Electroweave</h2><span>2025</span></div>
+        </div>
+      </a>
+    </div>
 
-<div class="column" class="container">
+    <div class="work-cell">
+      <a href="Rooms of Memories.html" class="tile-link">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/rooms-of-memories/IMG_A11.JPG" alt="Rooms of Memories preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Rooms of Memories</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
 
-<a href="LittleFuzzyReframed.html" class="tile-link" target="_blank">
-<div class="tile">
-  <div class="filterDiv Publication">
-  <img class="grayscale" src="Pic/Add/IMG_A13.JPG">
-  <?xml version="1.0" encoding="utf-8"?>
-  <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div class="descr">
-    <h1>A Little Fuzzy Reframed</h1>
-    <p>2025</p>
-  </div>
-  </div>
-</div>
-</a>
+    <div class="work-cell">
+      <a href="Zwemmen in de stad.html" class="tile-link">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/zwemmen/IMG_20.jpg" alt="Zwemmen in de stad preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Zwemmen in de stad</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
 
-<a href="https://jans-fabulous-site-3b184a.webflow.io/final-item/final" class="tile-link" target="_blank">
-<div class="tile">
-  <div class="filterDiv Publication">
-  <img class="grayscale" src="Pic/IMG_38.JPEG">
-  <?xml version="1.0" encoding="utf-8"?>
-  <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div class="descr">
-    <h1>Electroweave</h1>
-    <p>2025</p>
-  </div>
-  </div>
-</div>
-</a>
+    <div class="work-cell">
+      <a href="Null Teen Art Campaign.html" class="tile-link">
+        <div class="filterDiv Posters show">
+          <div class="tile-img-wrap">
+            <img src="Pic/null-teen/IMG_A21.JPG" alt="Null Teen Art Campaign preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Null Teen Art Campaign</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
 
-<a href="Null Teen Art Campaign.html" class="tile-link">
-<div class="tile">
-  <div class="filterDiv Posters">
-  <img class="grayscale" src="Pic/Add/IMG_A21.JPG">
-  <?xml version="1.0" encoding="utf-8"?>
-  <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div class="descr">
-    <h1>Null Teen Art Campaign</h1>
-    <p>2024</p>
-  </div>
-  </div>
-</div>
-</a>
+    <div class="work-cell">
+      <a href="Kinetic Poster.html" class="tile-link">
+        <div class="filterDiv Posters show">
+          <div class="tile-img-wrap">
+            <img src="Pic/kinetic-poster/IMG_90.JPEG" alt="Kinetic Poster preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Kinetic Poster</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
 
+    <div class="work-cell">
+      <a href="Untangled.html" class="tile-link">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/untangled/IMG_32.JPEG" alt="Untangled preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Untangled</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
 
+    <div class="work-cell">
+      <a href="Creativity - Manually Mechanically.html" class="tile-link">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/creativity/IMG_49.JPEG" alt="Creativity project preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Creativity — Manually / Mechanically</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
 
-</div>
+    <div class="work-cell">
+      <a href="Kindergarten Mural.html" class="tile-link">
+        <div class="filterDiv Other show">
+          <div class="tile-img-wrap">
+            <img src="Pic/kindergarten/IMG_A20.JPG" alt="Kindergarten Mural preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Kindergarten Mural</h2><span>2022</span></div>
+        </div>
+      </a>
+    </div>
 
-<div class="column" class="container">
+    <div class="work-cell">
+      <a href="Paintings & Ilustrations.html" class="tile-link">
+        <div class="filterDiv Other show">
+          <div class="tile-img-wrap">
+            <img src="Pic/paintings/IMG_35.jpeg" alt="Paintings & Illustrations preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Paintings &amp; Illustrations</h2><span>2022–2025</span></div>
+        </div>
+      </a>
+    </div>
 
-<a href="Kinetic Poster.html" class="tile-link">
-<div class="tile">
-  <div class="filterDiv Posters">
-  <img class="grayscale" src="Pic/IMG_90.JPEG">
-  <?xml version="1.0" encoding="utf-8"?>
-  <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div class="descr">
-    <h1>Kinetic Poster</h1>
-    <p>2024</p>
-  </div>
-  </div>
-</div>
-</a>
+  </div><!-- /work-grid -->
+</section>
 
-<a href="Creativity - Manually Mechanically.html" class="tile-link">
-<div class="tile">
-  <div class="filterDiv Publication">
-  <img class="grayscale" src="Pic/IMG_49.JPEG">
-  <?xml version="1.0" encoding="utf-8"?>
-  <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div class="descr">
-    <h1>Creativity - Manually/ Mechanically</h1>
-    <p>2024</p>
-  </div>
-  </div>
-</div>
-</a>
-
-<a href="Kindergarten Mural.html" class="tile-link">
-<div class="tile">
-  <div class="filterDiv Other">
-  <img class="grayscale" src="Pic/IMG_41.jpeg">
-  <?xml version="1.0" encoding="utf-8"?>
-  <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div class="descr">
-    <h1>Kindergarten Mural</h1>
-    <p>2022</p>
-  </div>
-  </div>
-</div>
-</a>
-
-</div>
-
-<div class="column" class="container">
-
-<a href="NN North Sea Jazz Poster.html" class="tile-link">
-<div class="tile">
-  <div class="filterDiv Posters">
-  <img class="grayscale" src="Pic/Add/IMG_A10.JPG">
-  <?xml version="1.0" encoding="utf-8"?>
-  <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div class="descr">
-    <h1>NN North Sea Jazz Poster</h1>
-    <p>2025</p>
-  </div>
-  </div>
-</div>
-</a>
-
-<a href="Untangled.html" class="tile-link">
-<div class="tile">
-  <div class="filterDiv Publication">
-  <img class="grayscale" src="Pic/IMG_32.JPEG">
-  <?xml version="1.0" encoding="utf-8"?>
-  <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div class="descr">
-    <h1>Untangled</h1>
-    <p>2024</p>
-  </div>
-  </div>
-</div>
-</a>
-
-<a href="Paintings & Ilustrations.html" class="tile-link">
-<div class="tile">
-  <div class="filterDiv Other">
-  <img class="grayscale" src="Pic/IMG_35.jpeg">
-  <?xml version="1.0" encoding="utf-8"?>
-  <svg class="aroo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M7 17L17 7M17 7H8M17 7V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <div class="descr">
-    <h1>Paintings & Ilustrations</h1>
-    <p>2022-2025</p>
-  </div>
-  </div>
-</div>
-</a>
-
-</div>
-
-</div>
-</div>
-
-
-
-
- 
-  
-
-
-
-  
-
-<div class="foot front" id="slide3">
-  
-  <div style="width: 80%; margin: auto; ">
-    <div class="line3"></div>
-<a style="float: left;font-size: 1.7vw"">© 2025 Jani Buńka. All rights reserved</a>
-<a href="https://www.instagram.com/jani_bun.jpg/#"><svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      
-      preserveAspectRatio="xMidYMin meet"
-      viewBox="0 0 24 24">
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-
-  
-
-
-    <a href="https://www.linkedin.com/in/jan-bunka-6938742a6"><svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      
-      shape-rendering="geometricPrecision" 
-      text-rendering="geometricPrecision" 
-      image-rendering="optimizeQuality" 
-      fill-rule="evenodd" 
-      clip-rule="evenodd"
-      preserveAspectRatio="xMidYMin meet"
-      viewBox="0 0 24 24" 
-      fill="none">
-      <path d="M6.5 8C7.32843 8 8 7.32843 8 6.5C8 5.67157 7.32843 5 6.5 5C5.67157 5 5 5.67157 5 6.5C5 7.32843 5.67157 8 6.5 8Z" fill="#0F0F0F"/>
-      <path d="M5 10C5 9.44772 5.44772 9 6 9H7C7.55228 9 8 9.44771 8 10V18C8 18.5523 7.55228 19 7 19H6C5.44772 19 5 18.5523 5 18V10Z" fill="#0F0F0F"/>
-      <path d="M11 19H12C12.5523 19 13 18.5523 13 18V13.5C13 12 16 11 16 13V18.0004C16 18.5527 16.4477 19 17 19H18C18.5523 19 19 18.5523 19 18V12C19 10 17.5 9 15.5 9C13.5 9 13 10.5 13 10.5V10C13 9.44771 12.5523 9 12 9H11C10.4477 9 10 9.44772 10 10V18C10 18.5523 10.4477 19 11 19Z" fill="#0F0F0F"/>
-      <path fill-rule="evenodd" clip-rule="evenodd" d="M20 1C21.6569 1 23 2.34315 23 4V20C23 21.6569 21.6569 23 20 23H4C2.34315 23 1 21.6569 1 20V4C1 2.34315 2.34315 1 4 1H20ZM20 3C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3H20Z" fill="#0F0F0F"/></svg>
+<!-- ── FOOTER ────────────────────────────────────────────────────── -->
+<footer class="site-footer">
+  <p class="footer-copy">© 2025 Jani Buńka. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="https://www.instagram.com/jani_bun.jpg/" aria-label="Instagram" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/jan-bunka-6938742a6" aria-label="LinkedIn" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M6.5 8C7.32843 8 8 7.32843 8 6.5C8 5.67157 7.32843 5 6.5 5C5.67157 5 5 5.67157 5 6.5C5 7.32843 5.67157 8 6.5 8Z"/><path d="M5 10C5 9.44772 5.44772 9 6 9H7C7.55228 9 8 9.44771 8 10V18C8 18.5523 7.55228 19 7 19H6C5.44772 19 5 18.5523 5 18V10Z"/><path d="M11 19H12C12.5523 19 13 18.5523 13 18V13.5C13 12 16 11 16 13V18.0004C16 18.5527 16.4477 19 17 19H18C18.5523 19 19 18.5523 19 18V12C19 10 17.5 9 15.5 9C13.5 9 13 10.5 13 10.5V10C13 9.44771 12.5523 9 12 9H11C10.4477 9 10 9.44772 10 10V18C10 18.5523 10.4477 19 11 19Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M20 1C21.6569 1 23 2.34315 23 4V20C23 21.6569 21.6569 23 20 23H4C2.34315 23 1 21.6569 1 20V4C1 2.34315 2.34315 1 4 1H20ZM20 3C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3H20Z"/></svg>
     </a>
   </div>
-</div>
-</div>
+</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-
+<!-- ── SCRIPTS ───────────────────────────────────────────────────── -->
+<script src="scroll.js"></script>
 <script>
-  const swiper = new Swiper('.swiper', {
-  loop: true,
+// Mobile nav toggle
+const toggle   = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+if (toggle && navLinks) toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
 
-  // If we need pagination
-  pagination: {
-    el: '.swiper-pagination',
-  },
-
-  // Navigation arrows
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
-});
-</script>
-
-
-
-
-    <script src="scroll.js"></script>
-
-    <script>
-      lightGallery(document.getElementById('relative-caption'), {
-    subHtmlSelectorRelative: true,
-});
-
-    </script>
-
-  <script>
-/*
-  Robust navbar show/hide using IntersectionObserver.
-  - Watches the #home (hero) section.
-  - When #home is mostly out of view, navbar shows.
-  - When #home is visible, navbar hides again.
-  - Uses the navbar's measured height to fully hide it (works on all screens).
-*/
-
-(function () {
-  const navbar = document.getElementById('navbar');
-  const hero = document.getElementById('home');
-
-  if (!navbar || !hero || !('IntersectionObserver' in window)) {
-    // Fallback: basic scroll listener if IntersectionObserver not supported
-    let lastShown = false;
-    const fallback = () => {
-      const threshold = window.innerHeight * 0.9;
-      const scrolled = window.scrollY || document.documentElement.scrollTop;
-      const shouldShow = scrolled > threshold;
-      if (shouldShow !== lastShown) {
-        navbar.style.top = shouldShow ? '0' : `-${navbar.offsetHeight}px`;
-        lastShown = shouldShow;
-      }
-    };
-    // initialize
-    navbar.style.top = `-${navbar.offsetHeight}px`;
-    window.addEventListener('scroll', throttle(fallback, 100));
-    return;
-  }
-
-  // Ensure navbar is fully hidden initially by using its measured height
-  const hideNavbar = () => navbar.style.top = `-${navbar.offsetHeight}px`;
-  const showNavbar = () => navbar.style.top = '0';
-
-  // Hide initially
-  hideNavbar();
-
-  // Observe the hero: when hero is NOT intersecting (i.e. user scrolled past it), show navbar
-  const io = new IntersectionObserver((entries) => {
-    const e = entries[0];
-    if (!e.isIntersecting) {
-      showNavbar();
-    } else {
-      hideNavbar();
-    }
-  }, {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.15 // consider hero visible when 15% is in viewport
+// Work filter
+function filterSelection(cat, e) {
+  document.querySelectorAll('.filterDiv').forEach(el => {
+    const match = cat === 'all' || el.classList.contains(cat);
+    el.classList.toggle('show', match);
+    const cell = el.closest('.work-cell');
+    if (cell) cell.style.display = match ? '' : 'none';
   });
-
-  io.observe(hero);
-
-  // Helper: throttle (small and safe)
-  function throttle(fn, wait) {
-    let last = 0;
-    return function(...args) {
-      const now = Date.now();
-      if (now - last >= wait) {
-        last = now;
-        fn.apply(this, args);
-      }
-    };
-  }
-
-  // Recompute hide offset if window resizes (useful for orientation change / mobile chrome UI)
-  window.addEventListener('resize', throttle(() => {
-    // if navbar currently hidden, re-hide using new height
-    if (navbar.style.top && navbar.style.top.startsWith('-')) {
-      hideNavbar();
-    }
-  }, 150));
-})();
-</script>
-
-
-
-
-
-<script>
-let slideIndex = 0;
-const slides = document.querySelectorAll(".slide");
-const dots = document.querySelectorAll(".dot");
-
-function showSlide(index) {
-  slides.forEach((slide, i) => {
-    slide.style.display = "none";
-    dots[i].classList.remove("active");
-  });
-
-  slides[index].style.display = "block";
-  dots[index].classList.add("active");
+  document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+  if (e && e.currentTarget) e.currentTarget.classList.add('active');
 }
-
-function nextSlide() {
-  slideIndex = (slideIndex + 1) % slides.length;
-  showSlide(slideIndex);
-}
-
-// Manual control (arrows)
-document.querySelector(".prev").addEventListener("click", () => {
-  slideIndex = (slideIndex - 1 + slides.length) % slides.length;
-  showSlide(slideIndex);
-});
-
-document.querySelector(".next").addEventListener("click", () => {
-  slideIndex = (slideIndex + 1) % slides.length;
-  showSlide(slideIndex);
-});
-
-// Dot control
-dots.forEach((dot, i) => {
-  dot.addEventListener("click", () => {
-    slideIndex = i;
-    showSlide(slideIndex);
-  });
-});
-
-// Auto-slide every 4 seconds
-setInterval(nextSlide, 9000);
-
-// Start by showing the first slide
-showSlide(slideIndex);
+document.querySelectorAll('.filterDiv').forEach(el => el.classList.add('show'));
 </script>
-
-<script> filterSelection("all")
-function filterSelection(c) {
-  var x, i;
-  x = document.getElementsByClassName("filterDiv");
-  if (c == "all") c = "";
-  // Add the "show" class (display:block) to the filtered elements, and remove the "show" class from the elements that are not selected
-  for (i = 0; i < x.length; i++) {
-    w3RemoveClass(x[i], "show");
-    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
-  }
-}
-
-// Show filtered elements
-function w3AddClass(element, name) {
-  var i, arr1, arr2;
-  arr1 = element.className.split(" ");
-  arr2 = name.split(" ");
-  for (i = 0; i < arr2.length; i++) {
-    if (arr1.indexOf(arr2[i]) == -1) {
-      element.className += " " + arr2[i];
-    }
-  }
-}
-
-// Hide elements that are not selected
-function w3RemoveClass(element, name) {
-  var i, arr1, arr2;
-  arr1 = element.className.split(" ");
-  arr2 = name.split(" ");
-  for (i = 0; i < arr2.length; i++) {
-    while (arr1.indexOf(arr2[i]) > -1) {
-      arr1.splice(arr1.indexOf(arr2[i]), 1);
-    }
-  }
-  element.className = arr1.join(" ");
-}
-
-// Add active class to the current control button (highlight it)
-var header = document.getElementById("btn-group");
-var btns = header.getElementsByClassName("btn");
-for (var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener("click", function() {
-  var current = document.getElementsByClassName("active");
-  current[0].className = current[0].className.replace(" active", "");
-  this.className += " active";
-  });
-}</script>
-
-<script>
-  document.querySelectorAll('.btn-group .btn').forEach(button => {
-    button.addEventListener('click', function () {
-      document.querySelectorAll('.btn-group .btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      this.classList.add('active');
-    });
-  });
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const sections = [
-    { id: "home", navId: "text1" },
-    { id: "slide2", navId: "text2" },
-    { id: "slide1", navId: "text3" } // adjust if ABOUT section has a unique ID
-  ];
-
-  const navLinks = sections.map(({ navId }) => document.getElementById(navId));
-  let currentSectionIndex = 0;
-
-  const setActive = (index) => {
-    navLinks.forEach((link, i) => {
-      if (i === index) {
-        link.style.fontWeight = "bold";
-      } else {
-        link.style.fontWeight = "normal";
-      }
-    });
-  };
-
-  const sectionOffsets = () => sections.map(({ id }) => {
-    const el = document.getElementById(id);
-    return el ? el.offsetTop : 0;
-  });
-
-  window.addEventListener("scroll", () => {
-    const scrollPosition = window.scrollY + window.innerHeight / 2;
-    const offsets = sectionOffsets();
-
-    for (let i = 0; i < offsets.length; i++) {
-      const next = offsets[i + 1] || Infinity;
-      if (scrollPosition >= offsets[i] && scrollPosition < next) {
-        if (currentSectionIndex !== i) {
-          currentSectionIndex = i;
-          setActive(i);
-        }
-        break;
-      }
-    }
-  });
-});
-</script>
-
-
 
 </body>
 </html>
-
