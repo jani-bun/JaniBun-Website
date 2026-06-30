@@ -118,13 +118,19 @@ b  { font-weight: 600; }
 .nav-links a.active::after { transform: scaleX(1); }
 .nav-links a.active { font-weight: 700; }
 
-/* hamburger — mobile */
+/* hamburger — mobile. Visual icon stays small (22px bars) but the
+   clickable area is padded out to a comfortable 44px tap target. */
 .nav-toggle {
   display: none;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 5px;
   cursor: pointer;
-  padding: 4px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  margin: -11px -11px -11px 0; /* offset the extra padding so layout doesn't shift */
 }
 .nav-toggle span {
   display: block;
@@ -279,7 +285,7 @@ svg.squiggle path {
   align-items: center;
   gap: .5rem;
   background: none;
-  border: 0px solid var(--black);
+  border: 1px solid transparent;
   border-radius: 0;
   padding: .75rem 1.4rem;
   cursor: pointer;
@@ -294,8 +300,7 @@ svg.squiggle path {
   white-space: nowrap;
 }
 #revealBtn:hover {
- /*  background: var(--black);
-  color: var(--white);*/
+ 
 }
 #revealBtn svg {
   width: 14px; height: 14px;
@@ -338,43 +343,59 @@ svg.squiggle path {
   text-transform: uppercase;
   color: var(--mid);
   cursor: pointer;
-  padding: .2rem 0;
+  padding: .75rem 0;       /* taller invisible tap area, same visual text size */
+  margin: -.55rem 0;       /* pulls the extra padding back so layout doesn't shift */
   border-bottom: 1px solid transparent;
   transition: color .2s, border-color .2s;
 }
 .btn:hover { color: var(--black); }
 .btn.active { color: var(--black); border-bottom-color: var(--black); font-weight: 700; }
 
-/* ── WORK GRID ───────────────────────────────────────────────────────────── */
+/* ── WORK GRID — responsive masonry, any aspect ratio, no flags ──────────────
+ *
+ * Baseline (all current browsers): CSS multi-column layout. Each tile keeps
+ * its image's natural aspect ratio (no cropping, no fixed box), so a wide
+ * landscape photo and a tall portrait photo both just display correctly
+ * with zero markup changes — the column width is fixed, height is whatever
+ * the image needs.
+ *
+ * Progressive enhancement: where native CSS masonry grid is supported
+ * (currently Safari's Grid Lanes), we switch to display:grid-lanes for
+ * tighter, more even packing across columns. Falls back invisibly
+ * everywhere else — same visual idea, slightly different packing algorithm.
+ */
 .work-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
+  column-count: 4;
+  column-gap: clamp(1rem, 2vw, 1.75rem);
   max-width: var(--maxw);
   margin-inline: auto;
+  padding: clamp(1rem, 2vw, 1.75rem);
 }
 
-/* each cell */
 .work-cell {
-  border-right: 1px solid var(--soft);
-  border-bottom: 1px solid var(--soft);
-  padding: clamp(.75rem, 1.5vw, 1.5rem);
+  break-inside: avoid;       /* keep each tile in one column, never split */
+  -webkit-column-break-inside: avoid;
+  margin-bottom: clamp(1rem, 2vw, 1.75rem);
+  display: inline-block;     /* needed for break-inside:avoid in some engines */
+  width: 100%;
 }
-.work-cell:nth-child(4n) { border-right: none; }
 
 .tile-link { display: block; }
 
 .filterDiv { display: none; }
 .filterDiv.show { display: block; }
 
+/* ── Image tiles: natural aspect ratio, any orientation, no flags ──────── */
 .tile-img-wrap {
   overflow: hidden;
-  aspect-ratio: 4/5;
   background: var(--surface);
+  position: relative;
+  line-height: 0;             /* removes inline-image whitespace gap */
 }
 .tile-img-wrap img {
-  width: 100%; height: 100%;
-  object-fit: cover;
+  display: block;
+  width: 100%;
+  height: auto;                /* natural ratio — portrait, landscape, square all just work */
   filter: grayscale(100%);
   -webkit-filter: grayscale(100%);
   transition: filter .45s var(--ease), transform .45s var(--ease);
@@ -407,15 +428,43 @@ svg.squiggle path {
   flex-shrink: 0;
 }
 
-@media (max-width: 900px) {
-  .work-grid { grid-template-columns: repeat(2, 1fr); }
-  .work-cell:nth-child(4n) { border-right: 1px solid var(--soft); }
-  .work-cell:nth-child(2n) { border-right: none; }
+@media (max-width: 1100px) {
+  .work-grid { column-count: 3; }
 }
-@media (max-width: 500px) {
-  .work-grid { grid-template-columns: 1fr; }
-  .work-cell { border-right: none; }
-  .work-cell:nth-child(2n) { border-right: none; }
+@media (max-width: 760px) {
+  .work-grid { column-count: 2; }
+}
+@media (max-width: 460px) {
+  .work-grid { column-count: 1; }
+}
+
+/* ── Progressive enhancement: native masonry grid where supported ──────
+ * Currently shipped in Safari (Grid Lanes / display:grid-lanes). Packs
+ * tiles into the shortest column automatically instead of column's
+ * top-to-bottom-then-next-column flow — visually similar, slightly
+ * tighter, and keeps natural reading order closer to tab order.
+ * Browsers without support simply ignore this whole block and keep
+ * using the column layout above. */
+@supports (grid-template-rows: masonry) or (display: grid-lanes) {
+  .work-grid {
+    display: grid-lanes;
+    grid-template-columns: repeat(4, 1fr);
+    column-count: initial;
+    gap: clamp(1rem, 2vw, 1.75rem);
+  }
+  .work-cell {
+    margin-bottom: 0; /* gap handles spacing in grid mode */
+    break-inside: auto;
+  }
+  @media (max-width: 1100px) {
+    .work-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .work-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 460px) {
+    .work-grid { grid-template-columns: 1fr; }
+  }
 }
 
 /* ── FOOTER ──────────────────────────────────────────────────────────────── */
@@ -436,8 +485,15 @@ svg.squiggle path {
 }
 .footer-links {
   display: flex;
-  gap: 1.25rem;
+  gap: .5rem;
   align-items: center;
+}
+.footer-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
 }
 .footer-links a svg {
   width: 1.1rem; height: 1.1rem;
@@ -733,3 +789,4 @@ svg.squiggle path {
   .about-grid { grid-template-columns: 1fr; }
   .about-img { height: 60vw; border-right: none; border-bottom: 1px solid var(--black); }
 }
+
