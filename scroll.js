@@ -1,226 +1,237 @@
 /**
- * JANI BUŃKA — Signature scroll reveal
+ * JANI BUŃKA — Signature scroll reveal (v1)
  *
- * Features:
- *  - Sticky-pin hero: wrapper is 280vh tall on desktop, 200vh on mobile
- *  - SVG path draws in as user scrolls through the wrapper, at an EVEN
- *    visual pace (see "Even-paced draw" below) so no part of the
- *    signature whips by faster or slower than the rest
- *  - "Reveal" button triggers a smooth auto-scroll animation through the
- *    full reveal, eased with no abrupt speed changes
- *  - "Keep scrolling" cue appears once signature is complete
- *  - Nav slides in only after the wrapper is fully scrolled past
- *  - Mobile: shorter wrapper, slightly thicker stroke, same draw logic
+ * Scroll-driven: path draws as the user scrolls through the hero wrapper.
+ * Each of the 5 pen-strokes gets equal scroll time (prevents the big swash
+ * from eating 78% of the scroll and the small letters snapping in).
+ *
+ * Button animation: decoupled from scroll position entirely.
+ * Drives strokeDashoffset directly on a rAF timer at a constant, readable
+ * pace with gentle ease-in/ease-out. No browser scroll-behavior fighting.
  */
 
 (function () {
   'use strict';
 
   /* ── Elements ─────────────────────────────────────────────────── */
-  const wrapper    = document.getElementById('heroWrapper');
-  const pathEl     = document.querySelector('svg.squiggle path');
-  const scrollCue  = document.querySelector('.hero-scroll');
-  const revealBtn  = document.getElementById('revealBtn');
-  const navbar     = document.getElementById('navbar');
-
+  const wrapper   = document.getElementById('heroWrapper');
+  const pathEl    = document.querySelector('svg.squiggle path');
+  const scrollCue = document.querySelector('.hero-scroll');
+  const revealBtn = document.getElementById('revealBtn');
+  const navbar    = document.getElementById('navbar');
   if (!wrapper || !pathEl) return;
 
-  /* ── Mobile detection ─────────────────────────────────────────── */
+  /* ── Mobile ───────────────────────────────────────────────────── */
   const isMobile = () => window.innerWidth <= 768;
-
-  /* ── Wrapper height: shorter on mobile so the reveal isn't brutal ── */
-  function setWrapperHeight () {
-    wrapper.style.height = isMobile() ? '200vh' : '280vh';
-  }
-  setWrapperHeight();
+  function setWrapperHeight() { wrapper.style.height = isMobile() ? '200vh' : '280vh'; }
+  function setStroke()        { pathEl.style.strokeWidth = isMobile() ? '22' : '18'; }
+  setWrapperHeight(); setStroke();
   window.addEventListener('resize', setWrapperHeight, { passive: true });
+  window.addEventListener('resize', setStroke,        { passive: true });
 
-  /* ── Squiggle stroke width: a touch thicker on mobile only ─────── */
-  function setStroke () {
-    pathEl.style.strokeWidth = isMobile() ? '22' : '18';
-  }
-  setStroke();
-  window.addEventListener('resize', setStroke, { passive: true });
-
-  /* ── Path length setup ────────────────────────────────────────── */
+  /* ── Path + subpath setup ─────────────────────────────────────── */
   const totalLen = pathEl.getTotalLength();
   pathEl.style.strokeDasharray  = totalLen;
-  pathEl.style.strokeDashoffset = totalLen; // fully hidden at start
+  pathEl.style.strokeDashoffset = totalLen;
 
-  /* ── Even-paced draw ───────────────────────────────────────────
-   * WHY the draw used to feel uneven:
-   * The signature is really five separate pen strokes joined by "moveto"
-   * jumps (M commands) — one long sweeping initial. and then four small,
-   * tight letterform pieces. A signature like this is almost never one
-   * smooth continuous line: ~78% of the path's total length belongs to
-   * that single opening swash, leaving the four detailed letter pieces
-   * sharing the remaining ~22%.
-   *
-   * strokeDashoffset draws proportionally to raw length, so the swash —
-   * most of the length — drew across most of the scroll, while each
-   * small letter got a sliver of scroll distance and seemed to "snap"
-   * into place. That's the stutter: not a bug in the numbers, but a
-   * mismatch between path-length-proportion and how long each stroke
-   * should *visually* take to draw.
-   *
-   * Fix: split the path into its real M-separated subpaths and give each
-   * one an EQUAL share of scroll progress, regardless of its length.
-   * Within each subpath, draw at a constant rate along that subpath only
-   * (so we never measure "speed" across a pen-lift, which isn't a draw
-   * speed at all — it's just where the pen moved with the line up).
-   */
-  const d = pathEl.getAttribute('d') || '';
-  // Split into individual subpath "d" strings, each starting with its own M.
-  const subpathDs = d
-    .split(/(?=[Mm])/)
-    .map(s => s.trim())
-    .filter(Boolean);
-
-  // Build one offscreen <path> per subpath so we can measure/sample each
-  // independently with the browser's own getTotalLength/getPointAtLength —
-  // fully precise, no manual curve math needed.
-  const svgNS = 'http://www.w3.org/2000/svg';
+  /* Build one temp path per M-separated subpath to measure each independently */
+  const svgNS      = 'http://www.w3.org/2000/svg';
   const measureSvg = document.createElementNS(svgNS, 'svg');
-  measureSvg.style.position = 'absolute';
-  measureSvg.style.width = '0';
-  measureSvg.style.height = '0';
-  measureSvg.style.overflow = 'hidden';
+  Object.assign(measureSvg.style, { position:'absolute', width:'0', height:'0', overflow:'hidden', pointerEvents:'none' });
   measureSvg.setAttribute('aria-hidden', 'true');
   document.body.appendChild(measureSvg);
 
-  const subpaths = subpathDs.map(sub => {
+  const subpaths   = (pathEl.getAttribute('d') || '').split(/(?=[Mm])/).map(s => s.trim()).filter(Boolean).map(sub => {
     const p = document.createElementNS(svgNS, 'path');
-    p.setAttribute('d', sub);
-    measureSvg.appendChild(p);
-    const len = p.getTotalLength();
-    return { el: p, len };
-  }).filter(sp => sp.len > 0); // drop any degenerate/zero-length pieces
+    p.setAttribute('d', sub); measureSvg.appendChild(p); return p.getTotalLength();
+  }).filter(len => len > 0);
 
-  const subCount = subpaths.length || 1;
+  const subCount  = subpaths.length || 1;
+  const subOff    = [];
+  let   runOff    = 0;
+  subpaths.forEach(len => { subOff.push(runOff); runOff += len; });
 
-  // Cumulative arc-length (on the REAL path) where each subpath starts —
-  // needed because strokeDashoffset is driven off the full path's total
-  // length, not each subpath's own length.
-  let runningOffset = 0;
-  const subpathArcOffsets = subpaths.map(sp => {
-    const offset = runningOffset;
-    runningOffset += sp.len;
-    return offset;
-  });
-
-  /* Given uniform progress p (0–1) across the WHOLE signature, return the
-     arc length (in the real path's coordinate system) to use for
-     strokeDashoffset, where each subpath gets an equal slice of p and
-     draws at a constant rate within that slice. */
-  function arcLengthForProgress (p) {
-    if (subpaths.length === 0) return p * totalLen;
-    let subIndex = Math.floor(p * subCount);
-    if (subIndex >= subCount) subIndex = subCount - 1;
-    let localT = p * subCount - subIndex;
-    if (localT < 0) localT = 0;
-    if (localT > 1) localT = 1;
-    const sp = subpaths[subIndex];
-    return subpathArcOffsets[subIndex] + localT * sp.len;
+  /* Given uniform progress p (0-1) where each subpath gets equal time,
+     return the arc length for strokeDashoffset. */
+  function arcForP(p) {
+    const si = Math.min(Math.floor(p * subCount), subCount - 1);
+    const lt = Math.min(Math.max(p * subCount - si, 0), 1);
+    return subOff[si] + lt * subpaths[si];
   }
 
-  /* Gentle smoothstep at the very start/end of the whole draw so it eases
-     in and out rather than starting at full speed instantly. Applied
-     globally (not per-subpath) so it doesn't reintroduce per-letter
-     speed bumps. */
-  function smoothstep (t) {
-    return t * t * (3 - 2 * t);
+  /* ── Build a time→arcLength look-up table for the button animation ──
+   *
+   * This is the key to smooth button animation at constant perceived speed.
+   *
+   * We want the pen tip to advance at ~constant pixels/second on screen.
+   * arcForP(p) already ensures equal-time per subpath, but the visual
+   * speed within each stroke still varies because the path itself curves
+   * (sharp bends cover fewer screen pixels per arc-length unit than
+   * straight sections). For the button animation we approximate constant
+   * SCREEN SPEED by sampling getPointAtLength at many points and building
+   * a cumulative visual-distance table, then inverting it.
+   *
+   * Scroll-driven draw uses a simple smoothstep because at human scrolling
+   * speeds the variation isn't perceptible.
+   */
+  const LUT_STEPS = 800;
+  const lutArcLen = new Float32Array(LUT_STEPS + 1); // arc length at each LUT step
+  const lutVisDst = new Float32Array(LUT_STEPS + 1); // cumulative visual distance
+
+  for (let i = 0; i <= LUT_STEPS; i++) {
+    lutArcLen[i] = arcForP(i / LUT_STEPS);
+  }
+  for (let i = 1; i <= LUT_STEPS; i++) {
+    try {
+      const a = pathEl.getPointAtLength(lutArcLen[i - 1]);
+      const b = pathEl.getPointAtLength(lutArcLen[i]);
+      // Don't accumulate distance across subpath gaps (pen lifts).
+      // Detect a jump: if point moves more than 5% of viewBox width it's a pen lift.
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const dist = Math.hypot(dx, dy);
+      lutVisDst[i] = lutVisDst[i - 1] + (dist > 50 ? 0 : dist);
+    } catch (_) {
+      lutVisDst[i] = lutVisDst[i - 1];
+    }
+  }
+  const totalVisDst = lutVisDst[LUT_STEPS];
+
+  /* Given animation time t (0-1), return the arc length that puts the
+     pen tip at a position it would be if moving at constant screen speed. */
+  function arcForConstantSpeed(t) {
+    if (totalVisDst === 0) return arcForP(t);
+    const target = t * totalVisDst;
+    let lo = 0, hi = LUT_STEPS;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (lutVisDst[mid] < target) lo = mid + 1; else hi = mid;
+    }
+    if (lo === 0) return lutArcLen[0];
+    const i0 = lo - 1, i1 = lo;
+    const d0 = lutVisDst[i0], d1 = lutVisDst[i1];
+    const frac = d1 > d0 ? (target - d0) / (d1 - d0) : 0;
+    return lutArcLen[i0] + frac * (lutArcLen[i1] - lutArcLen[i0]);
   }
 
-  /* ── Core scroll handler ──────────────────────────────────────── */
-  function getProgress () {
+  /* ── Apply draw ───────────────────────────────────────────────── */
+  /* Scroll version: smoothstep per subpath gives gentle easing */
+  function applyDrawScroll(p) {
+    const ss = p * p * (3 - 2 * p); // smoothstep
+    pathEl.style.strokeDashoffset = totalLen - arcForP(ss);
+  }
+
+  /* Button version: constant visual speed from the LUT, with gentle
+     ease-in and ease-out only at the very start and end (5% each). */
+  function applyDrawButton(t) {
+    // Gentle ease: remap t so we accelerate over first 5% and decelerate last 5%
+    let remapped;
+    if (t < 0.05) {
+      remapped = (t / 0.05) * (t / 0.05) * 0.05; // quad ease-in for first 5%
+    } else if (t > 0.95) {
+      const u = (t - 0.95) / 0.05;
+      remapped = 0.95 + u * (2 - u) * 0.05; // quad ease-out for last 5%
+    } else {
+      remapped = t; // perfectly linear in the middle
+    }
+    pathEl.style.strokeDashoffset = totalLen - arcForConstantSpeed(remapped);
+  }
+
+  /* ── Scroll-driven draw ─────────────────────────────────────────── */
+  let buttonAnimating = false;
+
+  function getScrollP() {
     const scrolled  = Math.max(-wrapper.getBoundingClientRect().top, 0);
     const maxScroll = wrapper.offsetHeight - window.innerHeight;
-    return Math.min(scrolled / maxScroll, 1);
+    return maxScroll > 0 ? Math.min(scrolled / maxScroll, 1) : 0;
   }
 
-  function applyProgress (progress) {
-    /* Draw path — completes at 80% so there's a beat before release.
-       Uses the per-subpath even-paced mapping instead of raw arc length. */
-    const rawDraw = Math.min(progress / 0.80, 1);
-    const eased   = smoothstep(rawDraw);
-    const drawnLength = arcLengthForProgress(eased);
-    pathEl.style.strokeDashoffset = totalLen - drawnLength;
+  function applyScrollState(sp) {
+    applyDrawScroll(Math.min(sp / 0.80, 1));
 
-    /* "Keep scrolling" cue — fades in once drawn, out before release */
     if (scrollCue) {
-      const op = progress > 0.82 && progress < 0.96
-        ? Math.min((progress - 0.82) / 0.08, 1)
-        : progress >= 0.96
-          ? Math.max(0, 1 - (progress - 0.96) / 0.04)
-          : 0;
+      const op = sp > 0.82 && sp < 0.96
+        ? Math.min((sp - 0.82) / 0.08, 1)
+        : sp >= 0.96 ? Math.max(0, 1 - (sp - 0.96) / 0.04) : 0;
       scrollCue.style.opacity = op;
     }
-
-    /* Reveal button — visible at start, hides once user has started scrolling */
     if (revealBtn) {
-      revealBtn.style.opacity = progress < 0.05 ? 1 : Math.max(0, 1 - (progress / 0.12));
-      revealBtn.style.pointerEvents = progress > 0.08 ? 'none' : 'auto';
+      revealBtn.style.opacity       = sp < 0.05 ? '1' : String(Math.max(0, 1 - sp / 0.12));
+      revealBtn.style.pointerEvents = sp > 0.08 ? 'none' : 'auto';
     }
-
-    /* Nav — show after wrapper fully scrolled past */
-    if (navbar) {
-      navbar.classList.toggle('visible', progress >= 1);
-    }
+    if (navbar) navbar.classList.toggle('visible', sp >= 1);
   }
 
   let ticking = false;
-  function onScroll () {
+  function onScroll() {
+    if (buttonAnimating) return;
     if (ticking) return;
     ticking = true;
-    requestAnimationFrame(() => {
-      applyProgress(getProgress());
-      ticking = false;
-    });
+    requestAnimationFrame(() => { applyScrollState(getScrollP()); ticking = false; });
   }
-
   window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll(); // init
+  onScroll();
 
-  /* ── Auto-scroll on "Reveal" button click ─────────────────────── */
+  /* ── Reveal button ────────────────────────────────────────────── */
   if (revealBtn) {
     revealBtn.addEventListener('click', () => {
-      /* Target scroll position = bottom of wrapper (full reveal + release) */
-      const targetY = wrapper.offsetTop + wrapper.offsetHeight - window.innerHeight;
+      if (buttonAnimating) return;
+      buttonAnimating = true;
+      revealBtn.style.opacity       = '0';
+      revealBtn.style.pointerEvents = 'none';
 
-      /* Smooth animated scroll — duration scales with distance, and uses
-         a single continuous ease for the whole trip so there's no change
-         in speed at any point along the way. */
-      const startY    = window.scrollY;
-      const distance  = targetY - startY;
-      const duration  = Math.min(Math.max(Math.abs(distance) / 0.4, 1800), 3200); // ms
-      let   startTime = null;
-      let   cancelled = false;
+      const DURATION      = 2000; // ms — easy pace to follow each stroke
+      const startScrollY  = window.scrollY;
+      const targetScrollY = wrapper.offsetTop + wrapper.offsetHeight - window.innerHeight;
+      const scrollDist    = targetScrollY - startScrollY;
+      const SCROLL_DUR    = DURATION + 600;
 
-      /* Ease in-out sine — gentler and more uniform-feeling than cubic,
-         with no inflection point where rate-of-change jumps. */
-      function ease (t) {
-        return -(Math.cos(Math.PI * t) - 1) / 2;
-      }
+      let t0 = null, scrollDone = false, cancelled = false;
 
-      /* If the user scrolls/touches manually mid-animation, stop driving
-         the scroll position so the two don't fight (a common cause of
-         perceived stutter). */
-      function cancelOnUserInput () {
-        cancelled = true;
-      }
-      window.addEventListener('wheel', cancelOnUserInput, { passive: true, once: true });
-      window.addEventListener('touchmove', cancelOnUserInput, { passive: true, once: true });
+      function scrollEase(t) { return -(Math.cos(Math.PI * t) - 1) / 2; }
 
-      function step (timestamp) {
+      /* If the user scrolls or touches the screen while the button
+         animation is running, stop driving scroll/draw ourselves and
+         hand control straight back to the normal scroll handler — so
+         a manual scroll attempt is never fought or ignored. */
+      function cancelOnUserInput() {
         if (cancelled) return;
-        if (!startTime) startTime = timestamp;
-        const elapsed  = timestamp - startTime;
-        const fraction = Math.min(elapsed / duration, 1);
-        window.scrollTo(0, startY + distance * ease(fraction));
-        if (fraction < 1) requestAnimationFrame(step);
+        cancelled       = true;
+        buttonAnimating = false;
+        if (revealBtn) revealBtn.style.pointerEvents = 'none';
+        onScroll(); // sync draw state to wherever the user actually is now
       }
+      window.addEventListener('wheel',     cancelOnUserInput, { passive: true, once: true });
+      window.addEventListener('touchmove', cancelOnUserInput, { passive: true, once: true });
+      window.addEventListener('keydown',   (e) => {
+        if (['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(e.key)) cancelOnUserInput();
+      }, { once: true });
 
-      requestAnimationFrame(step);
+      function frame(ts) {
+        if (cancelled) return;
+        if (!t0) t0 = ts;
+        const elapsed  = ts - t0;
+        const timeFrac = Math.min(elapsed / DURATION, 1);
+
+        applyDrawButton(timeFrac);
+
+        if (!scrollDone) {
+          const sf = Math.min(elapsed / SCROLL_DUR, 1);
+          window.scrollTo({ top: startScrollY + scrollDist * scrollEase(sf), behavior: 'instant' });
+          if (sf >= 1) scrollDone = true;
+        }
+
+        if (scrollCue) {
+          scrollCue.style.opacity = timeFrac > 0.88 ? String(Math.min((timeFrac - 0.88) / 0.1, 1)) : '0';
+        }
+
+        if (timeFrac < 1 || !scrollDone) {
+          requestAnimationFrame(frame);
+        } else {
+          buttonAnimating = false;
+          if (navbar) navbar.classList.add('visible');
+        }
+      }
+      requestAnimationFrame(frame);
     });
   }
 
