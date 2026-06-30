@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jani Buńka — Graphic Designer</title>
+  <meta name="description" content="Portfolio of Jani Buńka, graphic designer based in Rotterdam. WdKA student.">
+  <link rel="icon" href="Pic/about/Squiggle.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── NAV (hidden until hero scrolls out) ──────────────────────── -->
+<nav class="topnav" id="navbar" role="navigation" aria-label="Main navigation">
+  <ul>
+    <li class="nav-logo"><a href="index.html">Jani Buńka</a></li>
+    <li style="display:flex;align-items:center;gap:1rem;">
+      <div class="nav-links" id="navLinks">
+        <a href="#work">Work</a>
+        <a href="About.html">About</a>
+        <a href="mailto:janbunka0@gmail.com">Contact</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </li>
+  </ul>
+</nav>
+
+<!-- ── HERO WRAPPER (sticky pin zone) ───────────────────────────── -->
+<div id="heroWrapper">
+  <section class="hero" id="home" aria-label="Introduction">
+
+    <!-- top-left: name + role -->
+    <div class="hero-label">
+      <span>Graphic Designer</span>
+      <strong>Based in Rotterdam, NL</strong>
+    </div>
+
+    <!-- top-right: year -->
+    <span class="hero-year">2025</span>
+
+    <!-- ── Signature SVG ────────────────────────────────────────── -->
+    <svg class="squiggle"
+         viewBox="0 0 1000 400"
+         fill="none"
+         preserveAspectRatio="xMidYMid meet"
+         xmlns="http://www.w3.org/2000/svg"
+         aria-label="Jani Buńka signature"
+         role="img">
+      <path
+        d="M327.86 77.8525C458.698 102.431 641.761 113.209 625.766 55.1708
+           C609.771 -2.86744 129.95 449.431 61.9441 325.349
+           C-6.06223 201.267 826.369 186.591 941 171.914
+           M562.264 171.914C562.264 171.914 509.803 221.28 503.138 171.914
+           C498.14 134.893 517.169 133.677 537.127 129.22
+           C571.883 121.458 562.264 198.599 562.264 198.599
+           M609.771 122.549L613.103 192.905
+           C613.103 192.905 614.529 122.77 640.428 125.884
+           C664.182 128.741 663.088 186.591 663.088 186.591
+           M701.742 122.549V186.591
+           M701.742 88.5262C696.326 89.2577 696.326 101.804 701.742 102.535
+           C705.941 103.102 709.94 99.4335 709.74 95.1972
+           C709.548 91.1323 705.771 87.982 701.742 88.5262Z"
+        stroke-linejoin="round"
+        stroke-linecap="round"/>
+    </svg>
+
+    <!-- ── Reveal button — visible on load, fades out as user scrolls ── -->
+    <button id="revealBtn" aria-label="Auto-scroll to reveal signature">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      Reveal signature
+    </button>
+
+    <!-- ── "Keep scrolling" cue — appears once signature is fully drawn ── -->
+    <div class="hero-scroll" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      <span>Keep scrolling</span>
+    </div>
+
+  </section>
+</div><!-- /heroWrapper -->
+
+<!-- ── WORK ─────────────────────────────────────────────────────── -->
+<section id="work" aria-label="Selected work">
+
+  <div class="filter-bar" role="group" aria-label="Filter work by category">
+    <div class="btn-group" id="btn-group">
+      <button class="btn active" onclick="filterSelection('all',event)">All</button>
+      <button class="btn" onclick="filterSelection('Posters',event)">Poster</button>
+      <button class="btn" onclick="filterSelection('Publication',event)">Publication</button>
+      <button class="btn" onclick="filterSelection('Other',event)">Other</button>
+    </div>
+  </div>
+
+  <div class="work-grid" id="workGrid">
+
+    <div class="work-cell">
+      <a href="Radio Girl.html" class="tile-link">
+        <div class="filterDiv Other show">
+          <div class="tile-img-wrap">
+            <img src="Pic/radio-girl/IMG_40.JPEG" alt="Radio Girl project preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Radio Girl</h2><span>2025</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-cell">
+      <a href="LittleFuzzyReframed.html" class="tile-link" target="_blank" rel="noopener">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/fuzzy/IMG_A13.JPG" alt="A Little Fuzzy Reframed preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>A Little Fuzzy Reframed</h2><span>2025</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-cell">
+      <a href="NN North Sea Jazz Poster.html" class="tile-link">
+        <div class="filterDiv Posters show">
+          <div class="tile-img-wrap">
+            <img src="Pic/north-sea-jazz/IMG_A10.JPG" alt="NN North Sea Jazz Poster preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>NN North Sea Jazz Poster</h2><span>2025</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-cell">
+      <a href="https://jans-fabulous-site-3b184a.webflow.io/final-item/final" class="tile-link" target="_blank" rel="noopener">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/electroweave/IMG_38.JPEG" alt="Electroweave project preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Electroweave</h2><span>2025</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-cell">
+      <a href="Rooms of Memories.html" class="tile-link">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/rooms-of-memories/IMG_A11.JPG" alt="Rooms of Memories preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Rooms of Memories</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-cell">
+      <a href="Zwemmen in de stad.html" class="tile-link">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/zwemmen/IMG_20.jpg" alt="Zwemmen in de stad preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Zwemmen in de stad</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-cell">
+      <a href="Null Teen Art Campaign.html" class="tile-link">
+        <div class="filterDiv Posters show">
+          <div class="tile-img-wrap">
+            <img src="Pic/null-teen/IMG_A21.JPG" alt="Null Teen Art Campaign preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Null Teen Art Campaign</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-cell">
+      <a href="Kinetic Poster.html" class="tile-link">
+        <div class="filterDiv Posters show">
+          <div class="tile-img-wrap">
+            <img src="Pic/kinetic-poster/IMG_90.JPEG" alt="Kinetic Poster preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Kinetic Poster</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-cell">
+      <a href="Untangled.html" class="tile-link">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/untangled/IMG_32.JPEG" alt="Untangled preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Untangled</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-cell">
+      <a href="Creativity - Manually Mechanically.html" class="tile-link">
+        <div class="filterDiv Publication show">
+          <div class="tile-img-wrap">
+            <img src="Pic/creativity/IMG_49.JPEG" alt="Creativity project preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Creativity — Manually / Mechanically</h2><span>2024</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-cell">
+      <a href="Kindergarten Mural.html" class="tile-link">
+        <div class="filterDiv Other show">
+          <div class="tile-img-wrap">
+            <img src="Pic/kindergarten/IMG_A20.JPG" alt="Kindergarten Mural preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Kindergarten Mural</h2><span>2022</span></div>
+        </div>
+      </a>
+    </div>
+
+    <div class="work-cell">
+      <a href="Paintings & Ilustrations.html" class="tile-link">
+        <div class="filterDiv Other show">
+          <div class="tile-img-wrap">
+            <img src="Pic/paintings/IMG_35.jpeg" alt="Paintings & Illustrations preview" loading="lazy">
+          </div>
+          <div class="tile-meta"><h2>Paintings &amp; Illustrations</h2><span>2022–2025</span></div>
+        </div>
+      </a>
+    </div>
+
+  </div><!-- /work-grid -->
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────────────────────── -->
+<footer class="site-footer">
+  <p class="footer-copy">© 2025 Jani Buńka. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="https://www.instagram.com/jani_bun.jpg/" aria-label="Instagram" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+    <a href="https://www.linkedin.com/in/jan-bunka-6938742a6" aria-label="LinkedIn" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M6.5 8C7.32843 8 8 7.32843 8 6.5C8 5.67157 7.32843 5 6.5 5C5.67157 5 5 5.67157 5 6.5C5 7.32843 5.67157 8 6.5 8Z"/><path d="M5 10C5 9.44772 5.44772 9 6 9H7C7.55228 9 8 9.44771 8 10V18C8 18.5523 7.55228 19 7 19H6C5.44772 19 5 18.5523 5 18V10Z"/><path d="M11 19H12C12.5523 19 13 18.5523 13 18V13.5C13 12 16 11 16 13V18.0004C16 18.5527 16.4477 19 17 19H18C18.5523 19 19 18.5523 19 18V12C19 10 17.5 9 15.5 9C13.5 9 13 10.5 13 10.5V10C13 9.44771 12.5523 9 12 9H11C10.4477 9 10 9.44772 10 10V18C10 18.5523 10.4477 19 11 19Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M20 1C21.6569 1 23 2.34315 23 4V20C23 21.6569 21.6569 23 20 23H4C2.34315 23 1 21.6569 1 20V4C1 2.34315 2.34315 1 4 1H20ZM20 3C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3H20Z"/></svg>
+    </a>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ───────────────────────────────────────────────────── -->
+<script src="scroll.js"></script>
+<script>
+// Mobile nav toggle
+const toggle   = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+if (toggle && navLinks) toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+// Work filter
+function filterSelection(cat, e) {
+  document.querySelectorAll('.filterDiv').forEach(el => {
+    const match = cat === 'all' || el.classList.contains(cat);
+    el.classList.toggle('show', match);
+    const cell = el.closest('.work-cell');
+    if (cell) cell.style.display = match ? '' : 'none';
+  });
+  document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+  if (e && e.currentTarget) e.currentTarget.classList.add('active');
+}
+document.querySelectorAll('.filterDiv').forEach(el => el.classList.add('show'));
+</script>
+
+</body>
+</html>
